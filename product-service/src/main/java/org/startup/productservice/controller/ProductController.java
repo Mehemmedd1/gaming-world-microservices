@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.startup.productservice.entity.Product;
-import org.startup.productservice.repository.ProductRepository;
+import org.startup.productservice.service.ProductService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,25 +14,26 @@ import java.util.List;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private final ProductRepository productRepository;
+    private final ProductService productService;
 
-    public ProductController(ProductRepository productRepository, ResourcePatternResolver resourcePatternResolver) {
-        this.productRepository = productRepository;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
+
 
     @GetMapping
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id) {
-        return productRepository.findById(id).orElse(null);
+        return productService.getProductById(id).orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
     @PostMapping
     public ResponseEntity<String> addProduct(@RequestBody Product product) {
-        productRepository.save(product);
+        productService.addProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body("Product added successfully");
 
     }
