@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.startup.productservice.entity.Product;
-import org.startup.productservice.repository.ProductRepository;
 import org.startup.productservice.service.ProductService;
 
 import java.util.ArrayList;

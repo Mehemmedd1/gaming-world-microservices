@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,6 +14,10 @@ import java.time.LocalDateTime;
 @Data
 @RequiredArgsConstructor
 public class User {
+
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,5 +32,6 @@ public class User {
     private String password;
 
 
+    @Column()
     private LocalDateTime createdAt;
 }
