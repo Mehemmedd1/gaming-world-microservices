@@ -1,4 +1,10 @@
 spring:
+  rabbitmq:
+   host: rabbitmq
+   port: 5672
+   username: guest
+   password: guest
+
   datasource:
     url: jdbc:postgresql://postgres:5432/orderdb
     username: admin
