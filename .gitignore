@@ -87,3 +87,6 @@ Thumbs.db
 
 # Docker
 docker-compose.override.yml
+
+# Custom files
+Urls

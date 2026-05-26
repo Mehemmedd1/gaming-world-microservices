@@ -5,10 +5,47 @@ spring:
     gateway:
       server:
         webflux:
-          discovery:
-            locator:
-              enabled: true
-              lower-case-service-id: true
+          routes:
+            - id: order-service
+              uri: lb://order-service
+              predicates:
+                - Path=/api/orders/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: orderServiceCB
+                    fallbackUri: forward:/fallback/order
+
+            - id: product-service
+              uri: lb://product-service
+              predicates:
+                - Path=/api/products/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: productServiceCB
+                    fallbackUri: forward:/fallback/product
+
+            - id: user-service
+              uri: lb://user-service
+              predicates:
+                - Path=/api/users/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: userServiceCB
+                    fallbackUri: forward:/fallback/user
+
+            - id: notification-service
+              uri: lb://notification-service
+              predicates:
+                - Path=/api/notifications/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: notificationServiceCB
+                    fallbackUri: forward:/fallback/notification
+
 
 server:
   port: 8080
@@ -18,3 +55,30 @@ eureka:
     service-url:
       defaultZone: http://discovery-service:8761/eureka/
 
+resilience4j:
+  circuitbreaker:
+    instances:
+        orderServiceCB:
+            slidingWindowSize: 10
+            minimumNumberOfCalls: 5
+            failureRateThreshold: 50
+            waitDurationInOpenState: 15s
+            permittedNumberOfCallsInHalfOpenState: 3
+        productServiceCB:
+            slidingWindowSize: 10
+            minimumNumberOfCalls: 5
+            failureRateThreshold: 50
+            waitDurationInOpenState: 15s
+            permittedNumberOfCallsInHalfOpenState: 3
+        userServiceCB:
+            slidingWindowSize: 10
+            minimumNumberOfCalls: 5
+            failureRateThreshold: 50
+            waitDurationInOpenState: 15s
+            permittedNumberOfCallsInHalfOpenState: 3
+        notificationServiceCB:
+            slidingWindowSize: 10
+            minimumNumberOfCalls: 5
+            failureRateThreshold: 50
+            waitDurationInOpenState: 15s
+            permittedNumberOfCallsInHalfOpenState: 3
