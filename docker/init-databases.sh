@@ -18,7 +18,7 @@ if [ -z "$POSTGRES_MULTIPLE_DATABASES" ]; then
 fi
 
 echo "=========================================="
-echo "🗄️  PostgreSQL Çox-Veritabanı Inicialişi"
+echo "🗄️  PostgreSQL Çox-Veritabanı"
 echo "=========================================="
 echo "📋 Yaradılacaq veritabanlar: $POSTGRES_MULTIPLE_DATABASES"
 echo ""
@@ -34,18 +34,17 @@ for db in $(echo $POSTGRES_MULTIPLE_DATABASES | tr ',' ' '); do
 
   echo "🔄 Veritabanı işlənir: '$db'"
 
-  # DB yaradılır (və ya artıq varsa, skip)
-  psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname="postgres" <<-EOSQL
-    -- Veritabanı mövcud deyilsə yaradır
-    CREATE DATABASE "$db";
-    -- Bütün icazələri istifadəçiyə ver
-    ALTER DATABASE "$db" OWNER TO "$POSTGRES_USER";
-EOSQL
+  # DB mövcudluğunu yoxla, sonra yarat
+  db_exists=$(psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname="postgres" -tAc "SELECT 1 FROM pg_database WHERE datname='$db';")
 
-  if [ $? -eq 0 ]; then
-    echo "   ✅ Uğurlu: '$db'"
-  else
+  if [ "$db_exists" = "1" ]; then
     echo "   ℹ️  Info: '$db' artıq mövcuddur (skip)"
+  else
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname="postgres" <<-EOSQL
+      CREATE DATABASE "$db";
+      ALTER DATABASE "$db" OWNER TO "$POSTGRES_USER";
+EOSQL
+    echo "   ✅ Uğurlu: '$db'"
   fi
 done
 

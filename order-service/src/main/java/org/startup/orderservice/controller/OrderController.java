@@ -29,7 +29,7 @@ public class OrderController {
     public List<Order> getAllOrders(){
         return orderRepository.findAll();
     }
-    @GetMapping("/orders/product/{productId}")
+    @GetMapping("/product/{productId}")
     public ProductDto getProductInfo(@PathVariable Long productId) {
         return orderService.getProductById(productId);
     }

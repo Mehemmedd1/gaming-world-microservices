@@ -1,22 +1,19 @@
 package org.startup.userservice.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
-@Data
+@Setter
+@Getter
+@Builder
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class User {
-
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

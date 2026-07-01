@@ -15,6 +15,14 @@ public class FallbackController {
     public Mono<String> productFallback() {
         return Mono.just("Product service is currently unavailable");
     }
+    @GetMapping("/fallback/user")
+    public Mono<String> userFallback() {
+        return Mono.just("User service is currently unavailable");
+    }
+    @GetMapping("/fallback/notification")
+    public Mono<String> notificationFallback() {
+        return Mono.just("Notification service is currently unavailable");
+    }
     @GetMapping("/fallback/payment")
     public Mono<String> paymentFallback() {
         return Mono.just("Payment service is currently unavailable");
