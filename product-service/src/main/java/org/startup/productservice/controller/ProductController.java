@@ -20,6 +20,7 @@ public class ProductController {
         this.productService = productService;
     }
 
+    private int attemptCounter = 0;
 
     @GetMapping
     public List<Product> getAllProducts() {
@@ -27,8 +28,13 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
-        return productService.getProductById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    public ResponseEntity<?> getProductById(@PathVariable Long id) {
+        attemptCounter++;
+        if (attemptCounter <= 2) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Simulated error, attempt " + attemptCounter);
+        }
+        return productService.getProductById(id).map(ResponseEntity::ok).orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
     @PostMapping

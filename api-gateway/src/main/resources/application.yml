@@ -54,31 +54,3 @@ eureka:
   client:
     service-url:
       defaultZone: http://discovery-service:8761/eureka/
-
-resilience4j:
-  circuitbreaker:
-    instances:
-        orderServiceCB:
-            slidingWindowSize: 10
-            minimumNumberOfCalls: 5
-            failureRateThreshold: 50
-            waitDurationInOpenState: 15s
-            permittedNumberOfCallsInHalfOpenState: 3
-        productServiceCB:
-            slidingWindowSize: 10
-            minimumNumberOfCalls: 5
-            failureRateThreshold: 50
-            waitDurationInOpenState: 15s
-            permittedNumberOfCallsInHalfOpenState: 3
-        userServiceCB:
-            slidingWindowSize: 10
-            minimumNumberOfCalls: 5
-            failureRateThreshold: 50
-            waitDurationInOpenState: 15s
-            permittedNumberOfCallsInHalfOpenState: 3
-        notificationServiceCB:
-            slidingWindowSize: 10
-            minimumNumberOfCalls: 5
-            failureRateThreshold: 50
-            waitDurationInOpenState: 15s
-            permittedNumberOfCallsInHalfOpenState: 3
